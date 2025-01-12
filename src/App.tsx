@@ -12,7 +12,27 @@ const NumberBoxContainer = styled.div`
 `;
 
 function getRank(resNum:[number, number, number, number, number, number, number] , 
-  num:[number, number, number, number, number, number])
+  num:[number, number, number, number, number, number]) {
+    const isBonus = num.includes(resNum[6]);
+    resNum.splice(6, 1)
+    let matchedNum = 0;
+    for (const value of num) {
+      if(resNum.includes(value)) {
+        matchedNum++;
+      }
+    }
+    switch(matchedNum) {
+      case 6:
+        return "1등입니다!"
+      case 5:
+        return isBonus ? "2등입니다!" : "3등입니다!"
+      case 4:
+        return "4등입니다!"
+      case 3:
+        return "5등입니다!"
+    }
+    return "낙첨되었습니다"
+  }
 
 function App() {
   const [num, setNum] = useState<
@@ -76,7 +96,9 @@ function App() {
       }
       <div style={{height: "24px"}} />
       <Title>
-        N등 입니다!
+        { randNum &&
+          getRank([...num], [...randNum])
+        }
       </Title>
     </div>  
   );
